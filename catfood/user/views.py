@@ -52,7 +52,7 @@ class LoginView(APIView):
         # check the user_id
         try:
             user = User.objects.get(user_id=user_id)
-        except(ObjectDoesNotExist):
+        except(ObjectDoesNotExist, ValueError):
             content = {
                 'isSuccess': False,
                 'error': {
@@ -347,7 +347,7 @@ class CoursesView(APIView):
             try:
                 student = User.objects.get(user_id=student_id)
                 course = Course.objects.get(course_id=course_id)
-            except(ObjectDoesNotExist):
+            except(ObjectDoesNotExist, ValueError):
                 content = {
                     'isSuccess': False,
                     'error': {
@@ -357,7 +357,7 @@ class CoursesView(APIView):
                 return Response(content, status=200)
             try:
                 takeCourseItem = TakeCourse.objects.get(student_id=student, course_id=course)
-            except(ObjectDoesNotExist):
+            except(ObjectDoesNotExist, ValueError):
                 serializer = TakeCourseSerializer(data=takeCourse)
             else:
                 serializer = TakeCourseSerializer(takeCourseItem, data=takeCourse)
@@ -375,7 +375,7 @@ class CoursesView(APIView):
             course = Course.objects.get(course_id=course_id)
             try:
                 takeCourseItem = TakeCourse.objects.get(student_id=student, course_id=course)
-            except(ObjectDoesNotExist):
+            except(ObjectDoesNotExist, ValueError):
                 serializer = TakeCourseSerializer(data=takeCourse)
             else:
                 serializer = TakeCourseSerializer(takeCourseItem, data=takeCourse)
